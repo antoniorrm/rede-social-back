@@ -1,0 +1,30 @@
+{
+  "name": "postface-node-back",
+  "version": "1.0.0",
+  "description": "Backend para a disciplina de Projeto de Interfaces Web",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/antoniorrm/rede-social-back.git"
+  },
+  "keywords": [
+    "node",
+    "rest",
+    "api",
+    "backend"
+  ],
+  "author": "antoniorrm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antoniorrm/rede-social-back/issues"
+  },
+  "homepage": "https://github.com/antoniorrm/rede-social-back#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}
