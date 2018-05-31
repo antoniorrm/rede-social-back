@@ -3,7 +3,7 @@
 - Rede Social Backend para a disciplina de Projeto de Interfaces Web
 - Universidade Federal do Ceará - Compus Quixadá
 
-#API DOC
+# API DOC
 
 <h3>Users</h3>
 
@@ -16,7 +16,7 @@
         <li>GET ​/api/usuarios/:id/posts - Get all posts from user</li>
     </ul>
 
-<h3>Posts</h3>
+<!-- <h3>Posts</h3>
 
 <ul>
         <li>GET ​ /api/posts - Get all posts</li>
@@ -25,4 +25,4 @@
         <li>PUT ​/api/posts/:id - Get post with id :id and update</li>
         <li>DELETE ​ /api/posts/:id - Delete a post with id :id</li>
         <li>GET ​/api/posts/:id/usuario - Get user from post</li>
-    </ul>
+    </ul> -->
