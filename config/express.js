@@ -1,14 +1,14 @@
 
 let express = require('express');
-// let hostage_routes = require('../app/routes/hostages')
-// let bandit_routes = require('../app/routes/bandits')
+let user_routes = require('../app/routes/user');
+let post_routes = require('../app/routes/post');
 
 module.exports = function(){
     let app = express();
     app.set('port', 3000);
     app.use(express.static('./public'));
-    // hostage_routes(app);
-    // bandit_routes(app);
+    user_routes(app);
+    post_routes(app);
 
     return app;
 }
