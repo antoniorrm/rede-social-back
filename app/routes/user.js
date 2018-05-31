@@ -1,5 +1,5 @@
 
-let controller = require("../controller/userController.js");
+let controller = require("../controllers/userController.js");
 
 module.exports = function(app){
 
