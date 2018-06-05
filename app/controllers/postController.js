@@ -1,61 +1,98 @@
-//Stub database
+let postData = require('../models/post');
+let userData = require('../models/user');
 
-let posts = [
-    { _id: 1, text: "Tudo certo?", likes: 2, user_id: [1] },
-    { _id: 2, text: "Boa Noiteee", likes: 10, user_id: [3] }
-];
 
-//Adicionar Post
-module.exports.createPost = function(req, res){
-    console.log(req.body);
-    posts.push(req.body);
-    res.status(200).send(req.body);
-}
+module.exports.createPost = function(req, res) {
+    let promise = postData.create(req.body);
 
-//Buscar post por id
+    promise.then(
+        function(post) {
+            res.status(201).json(post);
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
+};
+
+
+module.exports.getAllPosts = function(req, res) {
+    let promise = postData.find().populate('uid').exec();
+
+    promise.then(
+        function(posts) {
+            res.status(200).json(posts);
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
+};
+
 module.exports.getPost = function(req, res) {
     let id = req.params.id;
+    let promise = postData.findById(id).exec();
 
-    let post = posts.find(post => (post._id == id));
-
-    if (post) {
-        res.json(post);
-    } else {
-        res.status(404).send('post not found!');
-    }
+    promise.then(
+        function(posts) {
+            if (posts) {
+                res.status(200).json(posts);
+            } else {
+                res.status(404).send("Post not found");
+            }
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
 };
 
-//Buscar todos os posts
-module.exports.getAllPosts = function(req, res) {
-    res.json(posts);
-};
-
-// Atualizar Post
 module.exports.updatePost = function(req, res) {
     let id = req.params.id;
 
-    let post = posts.find(post => (post._id == id));
-    let postN = req.body;
+    let post = new postData({
+        text: req.body.text,
+        likes: req.body.likes,
+        uid: req.body.user,
+        _id: req._id
+    });
 
-    if (post) {
-        let indexPost = posts.indexOf(post);
-        posts[indexPost] = postN;
-        res.json(postN);
-    } else {
-        res.status(404).send('Post not found!');
-    }
+    let promise = postData.findByIdAndUpdate(id, req.body).exec();
+
+    promise.then(
+        function(post) {
+            if (post) {
+                res.status(200).json(post);
+            } else {
+                res.status(404).send("Post not found");
+            }
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
 };
 
-// Delete Post
+
 module.exports.deletePost = function(req, res) {
     let id = req.params.id;
-    let post = posts.find(post => (post._id == id));
-    
-    if (post) {
-        let indexPost = posts.indexOf(post);
-        posts.slice(indexPost, 1);
-        res.json(post);
-    } else {
-        res.status(404).send('Post not found!');
-    }
+    let promise = postData.findByIdAndRemove(id).exec();
+
+    promise.then(
+        function(post) {
+            if (post) {
+                res.status(200).json(post);
+            } else {
+                res.status(404).send("Post not found")
+            }
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
 };

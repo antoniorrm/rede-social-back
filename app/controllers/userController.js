@@ -1,62 +1,98 @@
-//Stub database
+let userData = require('../models/user');
 
-let users = [
-    { _id: 1, nome: "Pereira", matricula: "3311" },
-    { _id: 2, nome: "Jackson", matricula: "1133" },
-    { _id: 3, nome: "Jordao", matricula: "2244" }
-];
 
-//Adicionar Usuário
-module.exports.createUser = function(req, res){
-    console.log(req.body);
-    users.push(req.body);
-    res.status(200).send(req.body);
-}
+module.exports.createUser = function(req, res) {
+    let promise = userData.create(req.body);
 
-//Buscar Usuário por id
+    promise.then(
+        function(user) {
+            res.status(201).json(user);
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
+};
+
+
+module.exports.getAllUsers = function(req, res) {
+    let promise = userData.find().exec();
+
+    promise.then(
+        function(users) {
+            res.status(200).json(users);
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
+};
+
 module.exports.getUser = function(req, res) {
     let id = req.params.id;
+    let promise = userData.findById(id).exec();
 
-    let user = users.find(user => (user._id == id));
-
-    if (user) {
-        res.json(user);
-    } else {
-        res.status(404).send('User not found!');
-    }
+    promise.then(
+        function(user) {
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).send("User not found");
+            }
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
 };
 
-//Buscar todos os usuários
-module.exports.getAllUsers = function(req, res) {
-    res.json(users);
-};
-
-// Atualizar Usuário
 module.exports.updateUser = function(req, res) {
     let id = req.params.id;
 
-    let user = users.find(user => (user._id == id));
-    let userN = req.body;
+    let user = new userData({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        _id: req._id
+    });
 
-    if (user) {
-        let indexUser = users.indexOf(user);
-        users[indexUser] = userN;
-        res.json(userN);
-    } else {
-        res.status(404).send('User not found!');
-    }
+    let promise = userData.findByIdAndUpdate(id, req.body).exec();
+
+    promise.then(
+        function(user) {
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).send("User not found");
+            }
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
 };
 
-// Delete Usuário
+
 module.exports.deleteUser = function(req, res) {
     let id = req.params.id;
-    let user = users.find(user => (user._id == id));
-    
-    if (user) {
-        let indexUser = users.indexOf(user);
-        users.slice(indexUser, 1);
-        res.json(user);
-    } else {
-        res.status(404).send('User not found!');
-    }
+    let promise = userData.findByIdAndRemove(id).exec();
+
+    promise.then(
+        function(user) {
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).send("User not found")
+            }
+        }
+    ).catch(
+        function(error) {
+            res.status(500).json(error);
+        }
+    );
 };
+
