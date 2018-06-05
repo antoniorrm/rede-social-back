@@ -1,8 +1,14 @@
 let userData = require('../models/user');
-
+let bcrypt = require('bcrypt');
 
 module.exports.createUser = function(req, res) {
     let promise = userData.create(req.body);
+
+    let user = new userData({
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password,  111)
+    })
 
     promise.then(
         function(user) {
